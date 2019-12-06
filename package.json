@@ -1,0 +1,21 @@
+{
+  "name": "user-story",
+  "version": "1.0.0",
+  "description": "User story api backend",
+  "main": "index.js",
+  "scripts": {
+    "start": "tsc && node dist/app.js"
+  },
+  "author": "Udoh Benjamin",
+  "license": "MIT",
+  "devDependencies": {
+    "@types/express": "^4.17.2",
+    "typescript": "^3.7.3"
+  },
+  "dependencies": {
+    "express": "^4.17.1",
+    "reflect-metadata": "^0.1.13",
+    "sqlite3": "^4.1.1",
+    "typeorm": "^0.2.21"
+  }
+}
