@@ -25,7 +25,7 @@ export class Story {
     @Column()
     cost: number;
 
-    @ManyToOne(type => User, user => user.id)
+    @ManyToOne(type => User, user => user.stories)
     user: User;
 
     @Column()

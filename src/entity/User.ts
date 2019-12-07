@@ -24,7 +24,7 @@ export class User {
     @Column()
     role: string;
 
-    @OneToMany(type => Story, story => story.id)
+    @OneToMany(type => Story, story => story.user)
     stories: Story[];
 
 }
