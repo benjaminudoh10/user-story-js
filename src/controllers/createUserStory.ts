@@ -8,16 +8,33 @@ import { User } from "../entity/User";
  */
 export async function createUserStory(request: Request, response: Response) {
 
-    // check api headers and get user
-    // get a user repository to perform operations with user
+    const api_key = request.header('X-STORY-AUTH');
+    if (!api_key) {
+        response.send({
+            'message': 'Forbidden. No api_key present',
+            'code': 401
+        });
+        return;
+    }
     const userRepository = getManager().getRepository(User);
-    let user = await userRepository.findOne(1);
+
+    // get user corresponding to the api_key from the header
+    let user = await userRepository.findOne({ api_key: api_key });
+    if (!user) {
+        response.send({
+            'message': 'Inavlid api key.',
+            'code': 403
+        });
+        return;
+    }
 
     // get a story repository to perform operations with post
     const storyRepository = getManager().getRepository(Story);
 
     // create a real story object from post json object sent over http
     const newStory = storyRepository.create(request.body);
+    newStory['assigned_for_approval'] = false;
+
     newStory['user'] = user;
 
     // save received post

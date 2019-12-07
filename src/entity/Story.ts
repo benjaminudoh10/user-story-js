@@ -34,7 +34,10 @@ export class Story {
     @Column()
     assigned_for_approval: boolean
 
-    @Column()
+    @Column({ nullable: true })
     approved: boolean
+
+    @Column({ nullable: true })
+    active: boolean
 
 }
