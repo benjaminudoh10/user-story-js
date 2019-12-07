@@ -24,6 +24,9 @@ export class User {
     @Column()
     role: string;
 
+    @Column()
+    api_key: string;
+
     @OneToMany(type => Story, story => story.user)
     stories: Story[];
 
