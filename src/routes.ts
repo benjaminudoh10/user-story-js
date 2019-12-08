@@ -10,32 +10,32 @@ import { userGetAllStories } from "./controllers/userGetAllStories";
  */
 export const AppRoutes = [
     {
-        path: "/register",
+        path: "/api/v1/register",
         method: "post",
         action: createUser
     },
     {
-        path: "/story",
+        path: "/api/v1/story",
         method: "post",
         action: createUserStory
     },
     {
-        path: "/story/:id/assign",
+        path: "/api/v1/story/:id/assign",
         method: "put",
         action: assignStoryToAdmin
     },
     {
-        path: "/stories/admin",
+        path: "/api/v1/stories/admin",
         method: "get",
         action: adminGetAllStories
     },
     {
-        path: "/stories",
+        path: "/api/v1/stories",
         method: "get",
         action: userGetAllStories
     },
     {
-        path: "/stories/:id/:action",
+        path: "/api/v1/stories/:id/:action",
         method: "put",
         action: adminProcessStories
     }

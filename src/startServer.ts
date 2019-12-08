@@ -20,7 +20,7 @@ let checkApiKeyPresent = function(
     request: Request, response: Response, next: NextFunction
 ) {
     const api_key = request.header('X-STORY-AUTH');
-    if (request.url != '/register') {
+    if (request.url != '/api/v1/register') {
         if (!api_key) {
             response.send({
                 'message': 'Forbidden. No api_key present',
