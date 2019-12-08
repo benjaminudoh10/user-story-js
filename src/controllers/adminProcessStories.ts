@@ -9,13 +9,6 @@ import { User } from "../entity/User";
 export async function adminProcessStories(request: Request, response: Response) {
 
     const api_key = request.header('X-STORY-AUTH');
-    if (!api_key) {
-        response.send({
-            'message': 'Forbidden. No api_key present',
-            'code': 401
-        });
-        return;
-    }
 
     // get a user repository to perform operations with user
     const userRepository = getManager().getRepository(User);
@@ -44,6 +37,8 @@ export async function adminProcessStories(request: Request, response: Response) 
 
     // get the story from db
     const id = Number(request.params.id);
+    const action = request.params.action;
+
     const story = await storyRepository.findOne({
         assigned_for_approval: true,
         id: id
@@ -56,13 +51,13 @@ export async function adminProcessStories(request: Request, response: Response) 
         return;
     }
 
-    const action = request.params.action;
-    
     if (action == 'approve') {
         story.approved = story.active = true;
     } else if (action == 'reject') {
         story.approved = story.active = false;
     }
+
+    story.last_edited_by = user.id;
 
     // save edited story
     await storyRepository.save(story);
