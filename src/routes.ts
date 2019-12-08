@@ -35,7 +35,7 @@ export const AppRoutes = [
         action: userGetAllStories
     },
     {
-        path: "/api/v1/stories/:id/:action",
+        path: "/api/v1/story/:id/:action",
         method: "put",
         action: adminProcessStories
     }

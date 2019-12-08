@@ -77,7 +77,7 @@ Returns the modified story object with the property `assigned_for_approval` set 
 Returns an array of stories whose `assigned_for_approval` property is true.
 
 
-### [`PUT`] `/api/v1/stories/:id/:action`
+### [`PUT`] `/api/v1/story/:id/:action`
 
 1. This endpoint enables an admin user to either approve or reject the story with the id specified in the url.
 2. The `action` parameter can either be `approve` or `reject`.
