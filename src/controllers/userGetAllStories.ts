@@ -1,6 +1,5 @@
 import {Request, Response} from "express";
-import {getManager} from "typeorm";
-import { User } from "../entity/User";
+import { userGetAllStoriesService } from "../services/userGetAllStoriesService";
 
 /**
  * List all stories that have been assigned for approval by admin.
@@ -9,24 +8,7 @@ export async function userGetAllStories(request: Request, response: Response) {
 
     const api_key = request.header('X-STORY-AUTH');
 
-    // get a user repository to perform operations with user
-    const userRepository = getManager().getRepository(User);
+    const stories = await userGetAllStoriesService(api_key);
 
-    // get user corresponding to the api_key from the header
-    let user = await userRepository.findOne({
-        relations: ["stories"],
-        where: { 
-            api_key: api_key
-        }
-    });
-
-    if (!user) {
-        response.send({
-            'message': 'Invalid api key provided.',
-            'code': 403
-        });
-        return;
-    }
-
-    response.send(user.stories.filter((story) => story.active != false));
+    response.send(stories);
 }

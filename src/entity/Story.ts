@@ -1,10 +1,11 @@
 import {
     Entity, PrimaryGeneratedColumn, Column, ManyToOne,
-    CreateDateColumn, UpdateDateColumn, Index
+    CreateDateColumn, UpdateDateColumn, Index, Check
 } from "typeorm";
 import { User } from '../entity/User';
 
 @Entity()
+@Check(`"complexity" == 'easy' OR "complexity" == 'medium' OR "complexity" == 'difficult' OR "complexity" == 'np-hard'`)
 export class Story {
 
     @PrimaryGeneratedColumn()
@@ -19,6 +20,9 @@ export class Story {
     modified: Date;
 
     @Column()
+    name: string;
+
+    @Column()
     summary: string;
 
     @Column("text")
@@ -27,10 +31,7 @@ export class Story {
     @Column()
     type: string;
 
-    @Column({
-        // There is a bug with enum on typeorm
-        // enum: ["easy", "medium", "difficult", "np-hard"]
-    })
+    @Column()
     complexity: string;
 
     @Column()
