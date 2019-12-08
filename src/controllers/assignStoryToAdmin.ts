@@ -9,13 +9,6 @@ import { User } from "../entity/User";
 export async function assignStoryToAdmin(request: Request, response: Response) {
 
     const api_key = request.header('X-STORY-AUTH');
-    if (!api_key) {
-        response.send({
-            'message': 'Forbidden. No api_key present',
-            'code': 401
-        });
-        return;
-    }
 
     // get a user repository to perform operations with user
     const userRepository = getManager().getRepository(User);
@@ -25,7 +18,7 @@ export async function assignStoryToAdmin(request: Request, response: Response) {
 
     if (!user) {
         response.send({
-            'message': 'Inavlid api key.',
+            'message': 'Invalid api key.',
             'code': 403
         });
         return;
@@ -35,23 +28,31 @@ export async function assignStoryToAdmin(request: Request, response: Response) {
     const storyRepository = getManager().getRepository(Story);
 
     // get the story to assign to admin from db
-    const newStory = await storyRepository.findOne({
+    const story = await storyRepository.findOne({
         relations: ['user'],
-        where: {id: Number(request.params.id)}
+        where: { id: Number(request.params.id) }
     });
 
-    if (newStory.user.id != user.id) {
+    if (!story) {
+        response.send({
+            message: `Story with id ${request.params.id} does not exist`,
+            code: 404
+        })
+        return;
+    }
+    if (story.user.id != user.id) {
         response.send({
             'message': 'Forbidden. You don\'t have access to this story.',
             'code': 403
         });
         return;
     }
-    newStory.assigned_for_approval = true;
+    story.assigned_for_approval = true;
+    story.last_edited_by = user.id;
 
     // save received post
-    await storyRepository.save(newStory);
+    await storyRepository.save(story);
 
     // return saved post back
-    response.send(newStory);
+    response.send(story);
 }

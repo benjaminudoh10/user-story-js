@@ -9,13 +9,6 @@ import { User } from "../entity/User";
 export async function adminGetAllStories(request: Request, response: Response) {
 
     const api_key = request.header('X-STORY-AUTH');
-    if (!api_key) {
-        response.send({
-            'message': 'Forbidden. No api_key present',
-            'code': 401
-        });
-        return;
-    }
 
     // get a user repository to perform operations with user
     const userRepository = getManager().getRepository(User);
