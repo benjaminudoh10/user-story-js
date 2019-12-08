@@ -1,11 +1,12 @@
 import {
     Entity, PrimaryGeneratedColumn, Column, OneToMany,
-    Generated, Unique, CreateDateColumn, UpdateDateColumn
+    Generated, Unique, CreateDateColumn, UpdateDateColumn, Check
 } from "typeorm";
 import { Story } from "./Story";
 
 @Entity()
-@Unique(["username", "email", "api_key"])
+@Unique(["email"])
+@Check(`"role" == 'user' OR "role" == 'admin'`)
 export class User {
 
     @PrimaryGeneratedColumn()
@@ -15,15 +16,12 @@ export class User {
     @CreateDateColumn()
     created: Date;
 
-    @UpdateDateColumn()
     @Column({ nullable: true })
+    @UpdateDateColumn()
     modified: Date;
 
     @Column()
     name: string;
-
-    @Column()
-    username: string;
 
     @Column()
     email: string;
@@ -31,11 +29,7 @@ export class User {
     @Column()
     password: string;
 
-    @Column({
-        // There is a bug with enum on typeorm
-        // enum: ["user", "admin"],
-        default: "user"
-    })
+    @Column({ default: "user" })
     role: string;
 
     @Column()
